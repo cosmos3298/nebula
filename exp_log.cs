@@ -9,79 +9,133 @@ using System.IO;
 
 public class exp_log : MonoBehaviour {
 
-	public static string name_of_log_file; // make file name public
-	public static string exp_progess; // An variable indicating the progress of experiment
-	public static int trial_number; // An variable indicating the progress of experiment
-	public static StringBuilder data_array;
+	public static string name_of_log_file;  // log file's name 
 
-	// copied
-	public List<string[]> data_row = new List<string[]>();
+	// To declare variables of Log
+	public static string exp_event; // A string variable indicating the events
+	public static double exp_elapsed_time;	// A double variable for experiment elapsed time
+	public static int trial_number; // An int variable indicating the number of trials
+	public static string responded_target; // 
+	public static double rt; // 
+	// Time when the experiment started 
+	public static DateTime exp_starting_time;
+	// Time when a game or bait was responded
+	public static DateTime responded_time;
+
+	public static string temp_data_row; // string object
+	//public static string[][] data_row_to_array = new string[data_row.Count][]; // jagged array of string
+	public static List<string[]> data_row = new List<string[]>(); // list object
+	public static StringBuilder data_array = new StringBuilder(); // stringbuilder object
+
 
 	// Use this for initialization
 	void Start () {
 
-		exp_progess = "experiment initiated ";
+		exp_event = "experiment initiated ";
 		trial_number = 1;
-		Debug.Log ("current experiment progress: " + exp_progess); // display current experiment progess
-		Debug.Log ("current trial number: " + trial_number); // display current trial number
 
 		// name expeirment log after the time the experiment started
-		DateTime exp_starting_time = DateTime.Now; 
+		exp_starting_time = DateTime.Now; 
 		name_of_log_file = exp_starting_time.ToString ("MM_dd_HH_mm"); // log file's name is the starting time
-		Debug.Log ("experiment started at the following time: " + name_of_log_file);
-		Debug.Log ("experiment starting time would be the name of experiment log");
 
-	
 		// delcare a one-dimension string object to contain data
 		// assign the first row (column title)
-		string[] temp_data_row = new string[5]; // a temporary string container of 4 columns
-		temp_data_row[0] = "serial_number";
+		string[] temp_data_row = new string[5]; // a temporary string container of 5 columns
+		temp_data_row[0] = "experiment_event";
 		temp_data_row[1] = "elapsed_time";
 		temp_data_row[2] = "trial_number";
-		temp_data_row[3] = "responded target";
-		temp_data_row[4] = "rt";
-
-		// To write titles in the 1st row
+		temp_data_row[3] = "responded_target";
+		temp_data_row[4] = "response_time";
+		// Add a row (title) in data_row(list object) 
 		data_row.Add(temp_data_row);
 
-		Debug.Log ("number of log columns: "+temp_data_row.GetLength(0));
-		Debug.Log ("1st column: "+temp_data_row[0]);
-		Debug.Log ("2nd column: "+temp_data_row[1]);
-		Debug.Log ("3rd column: "+temp_data_row[2]);
-		Debug.Log ("4th column: "+temp_data_row[3]);
-		Debug.Log ("5th column: "+temp_data_row[4]);
+		// show all data in data_row
+		for (int row_index = 1; row_index < data_row.Count; row_index++) {
 
-		// You can add up the values in as many cells as you want.
-		for(int i = 0; i < 10; i++){
-			temp_data_row = new string[3];
-			temp_data_row[0] = "Sushanta"+i; // name
-			temp_data_row[1] = ""+i; // ID
-			temp_data_row[2] = "$"+UnityEngine.Random.Range(5000,10000); // Income
-			data_row.Add(temp_data_row);
+			foreach (string item in data_row[row_index]) {
+				Debug.Log (item);
+			}
 		}
 
-
-		string[][] data_row_to_array = new string[data_row.Count][]; // To make a 2-dimensional array fitting data_row
-		// Show the number of data row
-
+		// To declare a jagged array fitting the length of data_row
+		string[][] data_row_to_array = new string[data_row.Count][]; 
 
 		// transfer data in data_row to array
 		for (int i = 0; i < data_row_to_array.Length; i++) {
 			data_row_to_array [i] = data_row [i];
 		}
+		Debug.Log ("data_row_to_array's length " + data_row_to_array.Length);
 
-		data_array = new StringBuilder ();
+		for (int array_index = 0; array_index <  data_row_to_array.Length; array_index++) {
+			Debug.Log ("array index: " + array_index);
 
-		for (int array_index = 0; array_index < data_row_to_array.Length; array_index++) {
-			data_array.AppendLine(string.Join("," , data_row_to_array[array_index]));
+			Debug.Log(string.Join (",", data_row_to_array[array_index]));
+			string temp_trial_log = string.Join (",", data_row_to_array [array_index]); // Adding , to data
+
+			data_array.AppendLine (temp_trial_log); // To write data to StringBuilder
+
 		}
-
-		// Debug.Log (data_array); // To show content of data_array in console
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	// write a new row of data to data_row
+	public static void write_data_row(){
+		
+		// elapsed time calculation
+		TimeSpan duration = DateTime.Now - exp_starting_time;
+
+		// To translate rt from timespan variable to a double variable in millisecond
+		exp_elapsed_time =  duration.TotalMilliseconds; 
+
+		// 
+		string[] temp_data_row = new string[5];
+		temp_data_row[0] = exp_event;
+		temp_data_row[1] = Convert.ToString(exp_elapsed_time); // "" was added to transform numbers to string
+		temp_data_row[2] = Convert.ToString(trial_number);
+		temp_data_row[3] = responded_target;
+		temp_data_row[4] = Convert.ToString(rt);
+
+		// To  erase the remaining data_row by declaring a new List vriable 
+		data_row = new List<string[]>(); 
+
+		// To write the trial's log on the list variable
+		data_row.Add(temp_data_row);
+
+		// show all data in data_row
+		for (int row_index = 1; row_index < data_row.Count; row_index++) {
+
+			foreach (string item in data_row[row_index]) {
+				Debug.Log (item);
+			}
+		}
+
+		// To declare a jagged array fitting the length of data_row
+		string[][] data_row_to_array = new string[data_row.Count][]; 
+
+		// transfer data in data_row to array
+		for (int i = 0; i < data_row_to_array.Length; i++) {
+			data_row_to_array [i] = data_row [i];
+		}
+		Debug.Log ("data_row_to_array's length " + data_row_to_array.Length);
+
+		for (int array_index = 0; array_index <  data_row_to_array.Length; array_index++) {
+			Debug.Log ("array index: " + array_index);
+
+			Debug.Log(string.Join (",", data_row_to_array[array_index]));
+			string temp_trial_log = string.Join (",", data_row_to_array [array_index]); // Adding , to data
+
+			data_array.AppendLine (temp_trial_log); // To write data to StringBuilder
+
+		}
+			
+		// Debug.Log (data_array); // To show content of data_array in console
+		// testing save lgo as csv
+		savelogascsv();
+
 	}
 
 	public static void savelogascsv(){ // save experiment log as a CSV file
