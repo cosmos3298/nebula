@@ -5,48 +5,44 @@ using System; // for DateTime function
 public class click_on_game : MonoBehaviour {
 	// Use this for initialization
 	// 
-	public static double rt; // if double format is not supported, float format could be adopted
+
 	public static int exp_last_trial;
 	public static GameObject log_recorder;
 	void Start () {
-		
-
 
 					}
 
 	// Mouse-down behavior on game
 	void OnMouseDown(){
 		
-		DateTime current_time = DateTime.Now; 
-		Debug.Log ("current time: " + current_time); // time when the game was hit
+		exp_log.responded_time = DateTime.Now; 
 
-		TimeSpan duration = current_time - Convert.ToDateTime (stimuli_instantiation.timing_stimuli_presented);
-		rt =  duration.TotalMilliseconds; // simplify rt as a double variable
-
-		// duration between presentation and repsonse were calculated
-		// timing_stimui_presented were determined in replicating_bait_RL.cs
-		Debug.Log("RT = " + current_time + " - " +  Convert.ToDateTime (stimuli_instantiation.timing_stimuli_presented));
-		//Debug.Log ("original duration  = " + duration); // RT in original Timespan format
-		Debug.Log ("RT = " + rt + " ms"); // RT in millisecond format 
-
-		// find box of game and baits created by stimuli instantiation.cs
-		GameObject box_of_game_baits = GameObject.Find ("box_of_game_baits"); 
+		TimeSpan duration = exp_log.responded_time - stimuli_instantiation.time_stimuli_presented;
+		exp_log.rt =  duration.TotalMilliseconds; // simplify rt as a double variable
 
 		//Debug.Log (GameObject.FindGameObjectWithTag("experiment"));
 		Debug.Log (name.ToString () + " was hit");
 
-	
+		// experiment event 
+		exp_log.exp_event = "hit";
 
-	//Destroy (GameObject.FindGameObjectWithTag("experiment"));
-		Destroy(box_of_game_baits);
-	//white_bait.SetActive (false); 
-	
-	// setting progress indicator
+		// elapsed time is calculated by exp_log.write_data_row
+
+		// responded target
+		exp_log.responded_target = name.ToString();
+
+		// write a new entry in log
+		exp_log.write_data_row();
+
+		// After Logging data of the trial
+
+		// 1 To add trial number when game was hit
 		exp_log.trial_number++;
-		//if (exp_progess ==1) {
-		// when trials are over, activate script in exp_log to save experiment data in a CSV-file
-		//}
-		exp_log.savelogascsv();
+
+		// 2 find box of game and baits created by stimuli instantiation and remove all baits and game
+		GameObject box_of_game_baits = GameObject.Find ("box_of_game_baits"); 	
+		Destroy(box_of_game_baits);
+
 	}
 
 	// Update is called once per frame

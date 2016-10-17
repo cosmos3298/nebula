@@ -23,7 +23,7 @@ public class exp_log : MonoBehaviour {
 	public static DateTime responded_time;
 
 	public static string temp_data_row; // string object
-	//public static string[][] data_row_to_array = new string[data_row.Count][]; // jagged array of string
+
 	public static List<string[]> data_row = new List<string[]>(); // list object
 	public static StringBuilder data_array = new StringBuilder(); // stringbuilder object
 
@@ -123,7 +123,6 @@ public class exp_log : MonoBehaviour {
 		Debug.Log ("data_row_to_array's length " + data_row_to_array.Length);
 
 		for (int array_index = 0; array_index <  data_row_to_array.Length; array_index++) {
-			Debug.Log ("array index: " + array_index);
 
 			Debug.Log(string.Join (",", data_row_to_array[array_index]));
 			string temp_trial_log = string.Join (",", data_row_to_array [array_index]); // Adding , to data

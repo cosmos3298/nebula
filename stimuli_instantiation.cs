@@ -4,68 +4,107 @@ using System.Collections.Generic;
 using System; // for DateTime function
 public class stimuli_instantiation : MonoBehaviour {
 
-	static public DateTime timing_stimuli_presented; // timing_stimui_presented were designated to be used by Click.cs (to calculate RT)
-	public GameObject game;
-	public GameObject bait;
+	// timing_stimui_presented were designated to be used to calculate RT
+	static public DateTime time_stimuli_presented; 
+
+	public static GameObject game;
+	public static GameObject bait;
 
 	// Use this for initialization
 	void Start () {
+
+
 		// declare an empty game object to containe game and baits 
 		GameObject box_of_game_baits= new GameObject ("box_of_game_baits");
 
-		string game_to_be = "red_game"; // To assign the name of the game to be loaded
-
-		string bait_to_be = "white_bait"; // To assign the name of the bait to be loaded
-
-		// To load the bait
-		 bait = Resources.Load (bait_to_be, typeof(GameObject)) as GameObject;
-		// To load the game
-		 game = Resources.Load (game_to_be, typeof(GameObject)) as GameObject;
+		string game_to_be = "red_game"; // To assign the name of the game
+		//string bait_to_be = "white_bait"; // To assign the name of the bait to be loaded
+		string[] bait_to_be = {"white_bait","green_bait"}; // To assign all names of baits (to be loaded later)
 
 		// To declare the length of stimuli matrix
-		int numer_of_x = 7;
-		int numer_of_y = 7;
+		int number_of_x = 6;
+		int number_of_y = 6;
+
+		// To declare the distance between stimuli
+		int horizontal_distance = 4;
+		int vertical_distance = 3;
 
 		// To set the zero point of stimuli array on screen
-		int[,] zeroing_point = new int[,] { {-12, 7} };
+		int[,] zeroing_point = new int[,] { {-10, 7} };
 
-		// Set-up Bait location
-		//int[ , ] stimuli_matrix = new int [ , ] { {0, 0}, {1, 2}, {3, 4}, {5, 6}, {7, 8} };
+		// To issue a random seed using System naming space
+		System.Random random_seed = new System.Random ();
 
-		for (int x_bait = 1; x_bait < numer_of_x; x_bait ++) {
-			for (int y_bait = 1; y_bait < numer_of_y; y_bait ++) {
-			
+		//UnityEngine.Random.seed = System.Guid.NewGuid ().GetHashCode (); // To use Guid to generate random number
+		int x_rand = random_seed.Next (0,6); // To generate a random number between 0 to 5 matching later for-loop index
+		Debug.Log(x_rand);
+
+		// To refresh random seed
+		random_seed = new System.Random ();
+
+		int y_rand = random_seed.Next (0,6); // To generate a random number between 0 to 5 matching later for-loop index
+		Debug.Log(y_rand);
+		for (int x = 0; x < number_of_x; x ++) {
+			for (int y = 0; y < number_of_y; y ++) {
+
+				// To load the bait
+		
+				int bait_index = random_seed.Next (0, (bait_to_be.Length)); // To generate a random number from number of baits
+				bait = Resources.Load (bait_to_be[bait_index], typeof(GameObject)) as GameObject;
+
+				// To load the game
+				game = Resources.Load (game_to_be, typeof(GameObject)) as GameObject;
+
 				// To determine where to present the stimulus
-				Vector3 stimulus_position = new Vector3 (zeroing_point [0, 0] + 4 * x_bait, zeroing_point [0, 1] + 3 * y_bait, 11);
 
-				// To instantiate the stimulus
-				GameObject cloned_bait = Instantiate (bait , stimulus_position, Quaternion.identity) as GameObject;
+				int x_coordinate = zeroing_point[ 0 , 0 ]+ horizontal_distance * x; // convert loop index to x with horizontal distance
+				int y_coordinate = zeroing_point[ 0 , 1 ]+ vertical_distance * y; // convert loop index to y with vertical distance
 
-				// To change the name of instantiated bait:
-				cloned_bait.name = "bait at " + Convert.ToString(x_bait) + " " + Convert.ToString(y_bait);
+				Vector3 location = new Vector3( x_coordinate, y_coordinate, 11);
 
-				// To assign the stimulus a child of box of game and baits
-				cloned_bait.transform.parent = box_of_game_baits.transform;
+				if (x == x_rand && y == y_rand) // for game
+				{
+					// To instantiate the game
+					GameObject cloned_game = Instantiate (game, location, Quaternion.identity) as GameObject;
 
+					// To change the name of instantiated bait:
+					cloned_game.name = "game at" + Convert.ToString(x_coordinate) + " " + Convert.ToString(y_coordinate); // codes prepared for game's coordinates: + Convert.ToString(x_bait) + " " + Convert.ToString(y_bait);
+					cloned_game.transform.parent = box_of_game_baits.transform;
+					Debug.Log ("game at" + Convert.ToString (x_coordinate) + " " + Convert.ToString (y_coordinate));
+				}
+
+				else{ // for baits
+					// To instantiate the stimulus
+					GameObject cloned_bait = Instantiate (bait , location, Quaternion.identity) as GameObject;
+
+					// To change the name of instantiated bait:
+					cloned_bait.name = "bait at " + Convert.ToString(x_coordinate) + " " + Convert.ToString(y_coordinate);
+
+					// To assign the stimulus a child of box of game and baits
+					cloned_bait.transform.parent = box_of_game_baits.transform;
+				//	Debug.Log ("bait at" + Convert.ToString (x_coordinate) + " " + Convert.ToString (y_coordinate));
+				}
 
 			}
 		}
 
 		// To instantiate the game
-		GameObject cloned_game = Instantiate (game, new Vector3 (-8, 10, 11), Quaternion.identity) as GameObject;
+		//GameObject cloned_game = Instantiate (game, new Vector3 (-8, 10, 11), Quaternion.identity) as GameObject;
 
 		// To change the name of instantiated bait:
-		cloned_game.name = "game"; // codes prepared for game's coordinates: + Convert.ToString(x_bait) + " " + Convert.ToString(y_bait);
-
+		//cloned_game.name = "game at"; // codes prepared for game's coordinates: + Convert.ToString(x_bait) + " " + Convert.ToString(y_bait);
 
 		// 
-		cloned_game.transform.parent = box_of_game_baits.transform;
+
 		Debug.Log ("instantiated game and baits in box of game and baits");
 
 		// Mark the time when stimuli were all presented
-		timing_stimuli_presented = DateTime.Now; 
+		time_stimuli_presented = DateTime.Now; 
 
 	}
+
+
+
 	// Update is called once per frame
 	void Update () {
 

@@ -7,22 +7,26 @@ public class click_on_bait : MonoBehaviour {
 	// Mouse-down behavior on game
 	void OnMouseDown(){
 
-		DateTime current_time = DateTime.Now; 
-		Debug.Log ("current time: " + current_time); // time when the game was hit
-
-		TimeSpan duration = current_time - Convert.ToDateTime (stimuli_instantiation.timing_stimuli_presented);
-		click_on_game.rt =  duration.TotalMilliseconds; // simplify rt as a double variable
-
-		// duration between presentation and repsonse were calculated
-		// timing_stimui_presented were determined in replicating_bait_RL.cs
-		Debug.Log("RT = " + current_time + " - " +  Convert.ToDateTime (stimuli_instantiation.timing_stimuli_presented));
+		exp_log.responded_time = DateTime.Now; 
+		// To Calculate rt
+		TimeSpan duration = exp_log.responded_time - stimuli_instantiation.time_stimuli_presented;
+		// To translate rt from timespan variable to a double variable in millisecond
+		exp_log.rt =  duration.TotalMilliseconds; 
 
 		//Debug.Log ("original duration  = " + duration); // RT in original Timespan format
-		Debug.Log ("RT = " + click_on_game.rt + " ms"); // RT in millisecond format 
+		//Debug.Log ("RT = " + exp_log.rt + " ms"); // RT in millisecond format 
 
 		// Declare that a bait was hit
 		Debug.Log (name.ToString () + " was hit");
 
+		// experiment event 
+		exp_log.exp_event = "false alarm";
+
+		// responded target
+		exp_log.responded_target = name.ToString();
+
+		// write a new entry in log
+		exp_log.write_data_row();
 	}
 
 	// Use this for initialization
