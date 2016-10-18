@@ -31,12 +31,15 @@ public class exp_log : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		exp_event = "experiment initiated ";
-		trial_number = 1;
+
 
 		// name expeirment log after the time the experiment started
 		exp_starting_time = DateTime.Now; 
 		name_of_log_file = exp_starting_time.ToString ("MM_dd_HH_mm"); // log file's name is the starting time
+
+		// To delcare initial event and trial number
+		exp_event = "experiment initiated ";
+		trial_number = 1;
 
 		// delcare a one-dimension string object to contain data
 		// assign the first row (column title)
@@ -138,7 +141,10 @@ public class exp_log : MonoBehaviour {
 	}
 
 	public static void savelogascsv(){ // save experiment log as a CSV file
-		string file_path = @"Assets/"+ name_of_log_file + ".csv"; // where log file will be saved
+
+		// To define where the log file will be saved
+		string file_path = @"Assets/"+ name_of_log_file + ".csv"; 
+		// To write the log file
 		File.WriteAllText(file_path , data_array.ToString());
 
 	}

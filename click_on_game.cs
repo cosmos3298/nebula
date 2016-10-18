@@ -7,7 +7,7 @@ public class click_on_game : MonoBehaviour {
 	// 
 
 	public static int exp_last_trial;
-	public static GameObject log_recorder;
+	//public static GameObject log_recorder;
 	void Start () {
 
 					}
@@ -36,12 +36,15 @@ public class click_on_game : MonoBehaviour {
 
 		// After Logging data of the trial
 
-		// 1 To add trial number when game was hit
+		// 1. To add trial number when game was hit
 		exp_log.trial_number++;
 
-		// 2 find box of game and baits created by stimuli instantiation and remove all baits and game
+		// 2. To find box of game and baits created by stimuli instantiation and remove all baits and game
 		GameObject box_of_game_baits = GameObject.Find ("box_of_game_baits"); 	
 		Destroy(box_of_game_baits);
+
+		// 3. To start the next trial
+		exp_starter.exp_start();
 
 	}
 

@@ -10,8 +10,8 @@ public class stimuli_instantiation : MonoBehaviour {
 	public static GameObject game;
 	public static GameObject bait;
 
-	// Use this for initialization
-	void Start () {
+
+	public static void exp_initiator () {
 
 
 		// declare an empty game object to containe game and baits 
@@ -62,6 +62,10 @@ public class stimuli_instantiation : MonoBehaviour {
 
 				Vector3 location = new Vector3( x_coordinate, y_coordinate, 11);
 
+				/*
+				The following selection statement depicted what stimulus to be presented
+				*/
+
 				if (x == x_rand && y == y_rand) // for game
 				{
 					// To instantiate the game
@@ -87,14 +91,7 @@ public class stimuli_instantiation : MonoBehaviour {
 
 			}
 		}
-
-		// To instantiate the game
-		//GameObject cloned_game = Instantiate (game, new Vector3 (-8, 10, 11), Quaternion.identity) as GameObject;
-
-		// To change the name of instantiated bait:
-		//cloned_game.name = "game at"; // codes prepared for game's coordinates: + Convert.ToString(x_bait) + " " + Convert.ToString(y_bait);
-
-		// 
+			
 
 		Debug.Log ("instantiated game and baits in box of game and baits");
 
@@ -104,9 +101,10 @@ public class stimuli_instantiation : MonoBehaviour {
 	}
 
 
-
+	// Use this for initialization
+	void Start(){
+	}
 	// Update is called once per frame
 	void Update () {
-
 	}
 }
