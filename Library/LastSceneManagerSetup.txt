@@ -1,0 +1,4 @@
+sceneSetups:
+- path: Assets/Cognitive Experiment in Unity.unity
+  isLoaded: 1
+  isActive: 1
