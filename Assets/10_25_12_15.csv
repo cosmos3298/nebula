@@ -1,0 +1,16 @@
+experiment_event,elapsed_time,trial_number,responded_target,response_time
+false alarm,7672.584,1,bait at 10 7,2290.422
+false alarm,8489.803,1,bait at 10 7,3108.368
+false alarm,9174.082,1,bait at 10 7,3792.48
+false alarm,13828.071,1,bait at -10 22,8446.599
+false alarm,14775.641,1,bait at 10 22,9394.128
+false alarm,15176.451,1,bait at 10 19,9794.941
+hit,16093.434,1,game at2 16,10711.813
+hit,17661.721,2,game at2 7,1561.164
+false alarm,18463.987,3,bait at 2 10,795.856
+false alarm,18865.391,3,bait at 6 10,1197.354
+false alarm,19181.631,3,bait at 10 10,1513.39
+hit,19711.563,3,game at2 7,2043.432
+hit,20747.395,4,game at-2 7,1028.759
+false alarm,21581.553,5,bait at -6 10,827.687
+hit,22067.272,5,game at-10 7,1313.412
